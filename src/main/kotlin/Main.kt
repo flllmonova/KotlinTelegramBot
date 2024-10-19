@@ -1,10 +1,8 @@
 package org.example
 
-fun main() {
-    val name = "Kotlin"
-    println("Hello, " + name + "!")
+import java.io.File
 
-    for (i in 1..5) {
-        println("i = $i")
-    }
+fun main() {
+    val wordsFile = File("words.txt")
+    wordsFile.forEachLine { println(it) }
 }
