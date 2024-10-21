@@ -9,7 +9,11 @@ fun main() {
 
     wordsFile.forEachLine {
         val line = it.split("|")
-        val word = Word(original = line[0], translate = line[1], correctAnswersCount = line[2].toIntOrNull() ?: 0)
+        val word = Word(
+            original = line[0],
+            translate = line[1],
+            correctAnswersCount = line.getOrNull(2)?.toIntOrNull() ?: 0
+        )
         dictionary.add(word)
     }
 
