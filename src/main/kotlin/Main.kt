@@ -6,9 +6,6 @@ fun main() {
 
     val dictionary = loadDictionary(File("words.txt"))
 
-    dictionary.forEach { println(it.toString()) }
-    println()
-
     do {
         println(
             """
