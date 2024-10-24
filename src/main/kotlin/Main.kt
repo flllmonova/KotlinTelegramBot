@@ -28,7 +28,7 @@ fun main() {
 
                     if (notLearnedList.isEmpty()) {
                         println("Все слова в словаре выучены")
-                        return
+                        break
                     }
 
                     val questionWords = notLearnedList.take(QUESTION_WORDS_COUNT).shuffled()
