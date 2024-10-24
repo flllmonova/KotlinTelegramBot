@@ -2,6 +2,8 @@ package org.example
 
 import java.io.File
 
+const val REQUIRED_LEARNED_COUNT = 3
+
 fun main() {
 
     val dictionary = loadDictionary(File("words.txt"))
@@ -22,8 +24,7 @@ fun main() {
             1 -> println("Выбран пункт 'Учить слова'")
             2 -> {
                 val totalCount = dictionary.size
-                val requiredLearnedCount = 3
-                val learnedCount = dictionary.filter { it.correctAnswersCount >= requiredLearnedCount }.size
+                val learnedCount = dictionary.filter { it.correctAnswersCount >= REQUIRED_LEARNED_COUNT }.size
                 val percent = learnedCount * 100 / totalCount
                 println("Выучено $learnedCount из $totalCount слов | $percent%\n")
             }
