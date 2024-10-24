@@ -27,11 +27,11 @@ fun main() {
                     val notLearnedList = dictionary.filter { it.correctAnswersCount < REQUIRED_LEARNED_COUNT }
 
                     if (notLearnedList.isEmpty()) {
-                        println("Все слова в словаре выучены")
+                        println("Все слова в словаре выучены\n")
                         break
                     }
 
-                    val questionWords = notLearnedList.take(QUESTION_WORDS_COUNT).shuffled()
+                    val questionWords = notLearnedList.shuffled().take(QUESTION_WORDS_COUNT)
                     val correctAnswer = questionWords.random()
 
                     println("\n${correctAnswer.original}:")
