@@ -3,6 +3,7 @@ package org.example
 import java.io.File
 
 const val REQUIRED_LEARNED_COUNT = 3
+const val QUESTION_WORDS_COUNT = 4
 
 fun main() {
 
@@ -21,13 +22,34 @@ fun main() {
         val userInput = readln().toIntOrNull()
 
         when (userInput) {
-            1 -> println("Выбран пункт 'Учить слова'")
+            1 -> {
+                do {
+                    val notLearnedList = dictionary.filter { it.correctAnswersCount < REQUIRED_LEARNED_COUNT }
+
+                    if (notLearnedList.isEmpty()) {
+                        println("Все слова в словаре выучены")
+                        return
+                    }
+
+                    val questionWords = notLearnedList.take(QUESTION_WORDS_COUNT).shuffled()
+                    val correctAnswer = questionWords.random()
+
+                    println("\n${correctAnswer.original}:")
+                    questionWords.forEach { word: Word ->
+                        println(" ${questionWords.indexOf(word) + 1} - ${word.translate}")
+                    }
+
+                    val userAnswerInput = readln().toIntOrNull()
+                } while (userAnswerInput != 0)
+            }
+
             2 -> {
                 val totalCount = dictionary.size
                 val learnedCount = dictionary.filter { it.correctAnswersCount >= REQUIRED_LEARNED_COUNT }.size
                 val percent = learnedCount * 100 / totalCount
                 println("Выучено $learnedCount из $totalCount слов | $percent%\n")
             }
+
             0 -> return
             else -> println("Введите число 1, 2 или 0")
         }
