@@ -35,8 +35,8 @@ fun main() {
                     val correctAnswer = questionWords.random()
 
                     println("\n${correctAnswer.original}:")
-                    questionWords.forEach { word: Word ->
-                        println(" ${questionWords.indexOf(word) + 1} - ${word.translate}")
+                    questionWords.forEachIndexed { index, word ->
+                        println(" ${index + 1} - ${word.translate}")
                     }
 
                     val userAnswerInput = readln().toIntOrNull()
