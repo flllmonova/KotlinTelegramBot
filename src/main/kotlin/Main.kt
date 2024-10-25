@@ -7,7 +7,8 @@ const val QUESTION_WORDS_COUNT = 4
 
 fun main() {
 
-    val dictionary = loadDictionary(File("words.txt"))
+    val wordsFile = File("words.txt")
+    val dictionary = loadDictionary(wordsFile)
 
     do {
         println(
@@ -33,13 +34,27 @@ fun main() {
 
                     val questionWords = notLearnedList.shuffled().take(QUESTION_WORDS_COUNT)
                     val correctAnswer = questionWords.random()
+                    val correctAnswerId = questionWords.indexOf(correctAnswer) + 1
 
                     println("\n${correctAnswer.original}:")
                     questionWords.forEachIndexed { index, word ->
                         println(" ${index + 1} - ${word.translate}")
                     }
+                    println(" ----------\n 0 - Меню")
 
                     val userAnswerInput = readln().toIntOrNull()
+
+                    when (userAnswerInput) {
+                        correctAnswerId -> {
+                            println("Правильно!")
+                            correctAnswer.correctAnswersCount++
+                            wordsFile.saveDictionary(dictionary)
+                        }
+
+                        0 -> break
+                        else -> println("Неправильно! ${correctAnswer.original} – это ${correctAnswer.translate}")
+                    }
+
                 } while (userAnswerInput != 0)
             }
 
@@ -71,4 +86,9 @@ fun loadDictionary(wordsFile: File): List<Word> {
     }
 
     return dictionary
+}
+
+fun File.saveDictionary(dictionary: List<Word>) {
+    this.writeText("")
+    dictionary.forEach { this.appendText("${it.component1()}|${it.component2()}|${it.component3()}\n") }
 }
