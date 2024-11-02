@@ -21,7 +21,6 @@ fun main() {
                         println()
                         break
                     }
-
                     if (trainer.checkAnswer(userAnswerInput?.minus(1))) {
                         println("Правильно!")
                     } else {
