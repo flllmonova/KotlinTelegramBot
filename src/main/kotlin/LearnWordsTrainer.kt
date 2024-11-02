@@ -31,6 +31,17 @@ class LearnWordsTrainer {
         words.forEach { wordsFile.appendText("${it.component1()}|${it.component2()}|${it.component3()}\n") }
     }
 
+    fun printMenu() {
+        println(
+            """
+            Меню: 
+            1 – Учить слова
+            2 – Статистика
+            0 – Выход
+        """.trimIndent()
+        )
+    }
+
     fun getNextQuestion(): Question? {
         val notLearnedList = dictionary.filter { it.correctAnswersCount < REQUIRED_LEARNED_COUNT }
         if (notLearnedList.isEmpty()) return null
@@ -58,16 +69,5 @@ class LearnWordsTrainer {
         val learned = dictionary.filter { it.correctAnswersCount >= REQUIRED_LEARNED_COUNT }.size
         val percent = learned * 100 / total
         return Statistics(total, learned, percent)
-    }
-
-    fun printMenu() {
-        println(
-            """
-            Меню: 
-            1 – Учить слова
-            2 – Статистика
-            0 – Выход
-        """.trimIndent()
-        )
     }
 }
