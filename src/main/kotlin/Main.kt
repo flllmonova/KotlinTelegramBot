@@ -5,7 +5,14 @@ fun main() {
     val trainer = LearnWordsTrainer()
 
     while (true) {
-        trainer.printMenu()
+        println(
+            """
+            Меню: 
+            1 – Учить слова
+            2 – Статистика
+            0 – Выход
+        """.trimIndent()
+        )
 
         when (readln().toIntOrNull()) {
             1 -> {
