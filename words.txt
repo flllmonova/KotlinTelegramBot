@@ -1,3 +1,8 @@
-hello|привет|0
-dog|собака|0
-cat|кошка|0
+increasing|возрастающий|0
+decreasing|убывающий|0
+is considered||рассматривается|0
+counterpart|аналог|0
+inclusive|включительно|0
+exclusive|не включительно|0
+truncated|усеченный|0
+retrieve|извлекать|0
