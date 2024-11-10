@@ -12,22 +12,36 @@ fun main(args: Array<String>) {
 
     while (true) {
         Thread.sleep(2000)
-        val updates = getUpdates(botToken, updateId)
+        val updates: String = getUpdates(botToken, updateId)
         println(updates)
 
-        val startUpdateId = updates.lastIndexOf("update_id")
-        val endUpdateId = updates.lastIndexOf(",\n\"message\"")
-        if (startUpdateId == -1 || endUpdateId == -1) continue
-        val updateIdString = updates.substring(startUpdateId + 11, endUpdateId)
-        updateId = updateIdString.toInt() + 1
+        val lastUpdateId = getLastUpdateId(updates)
+        if (lastUpdateId == null) continue else updateId = lastUpdateId + 1
+
+        println(getMessageText(updates))
     }
 }
 
 fun getUpdates(botToken: String, updateId: Int): String {
-    val urlGetUpdates: String = "https://api.telegram.org/bot$botToken/getUpdates?offset=$updateId"
+    val urlGetUpdates = "https://api.telegram.org/bot$botToken/getUpdates?offset=$updateId"
     val client: HttpClient = HttpClient.newBuilder().build()
     val request: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlGetUpdates)).build()
     val response: HttpResponse<String> = client.send(request, HttpResponse.BodyHandlers.ofString())
 
     return response.body()
+}
+
+fun getLastUpdateId(updates: String): Int? {
+    val lastUpdateIdRegex = "\"update_id\":(\\d+)".toRegex()
+    val matchResult = lastUpdateIdRegex.find(updates)
+    val groups = matchResult?.groups
+    return groups?.get(1)?.value?.toIntOrNull()
+}
+
+fun getMessageText(updates: String): String {
+    val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
+    val matchResult: MatchResult? = messageTextRegex.find(updates)
+    val groups: MatchGroupCollection? = matchResult?.groups
+    val text: String = groups?.get(1)?.value ?: "no new messages"
+    return text
 }
