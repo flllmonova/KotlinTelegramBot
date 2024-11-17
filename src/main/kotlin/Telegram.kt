@@ -10,6 +10,9 @@ fun main(args: Array<String>) {
     var lastUpdateId = 0
     var chatId = 0
     var messageText = ""
+    var callbackData = ""
+
+    val trainer = LearnWordsTrainer(3, 4)
 
     while (true) {
         Thread.sleep(2000)
@@ -21,29 +24,33 @@ fun main(args: Array<String>) {
 
         chatId = getChatId(updates)
 
-        messageText = getMessageText(updates)
-        if (messageText.equals("Hello", ignoreCase = true)) telegramBotService.sendMessage(chatId)
+        messageText = getMessageText(updates).lowercase()
+        if (messageText == "hello") telegramBotService.sendMessage(chatId, "Hello")
+
+        if (messageText == "/start") telegramBotService.sendMenu(chatId)
     }
 }
 
 fun getLastUpdateId(updates: String): Int {
     val lastUpdateIdRegex = "\"update_id\":(\\d+)".toRegex()
     val matchResult = lastUpdateIdRegex.find(updates)
-    val groups = matchResult?.groups
-    return groups?.get(1)?.value?.toIntOrNull() ?: -1
+    return matchResult?.groups?.get(1)?.value?.toIntOrNull() ?: -1
 }
 
 fun getMessageText(updates: String): String {
     val messageTextRegex: Regex = "\"text\":\"(.+?)\"".toRegex()
-    val matchResult: MatchResult? = messageTextRegex.find(updates)
-    val groups: MatchGroupCollection? = matchResult?.groups
-    val text: String = groups?.get(1)?.value ?: "no new messages"
-    return text
+    val matchResult = messageTextRegex.find(updates)
+    return matchResult?.groups?.get(1)?.value ?: ""
 }
 
 fun getChatId(updates: String): Int {
     val chatIdRegex = "\"id\":(\\d+)".toRegex()
     val matchResult = chatIdRegex.find(updates)
-    val chatId = matchResult?.groups?.get(1)?.value?.toInt() ?: -1
-    return chatId
+    return matchResult?.groups?.get(1)?.value?.toInt() ?: -1
+}
+
+fun getCallbackData(updates: String): String {
+    val dataRegex = "\"data\":\"(.+?)\"".toRegex()
+    val matchResult = dataRegex.find(updates)
+    return matchResult?.groups?.get(1)?.value ?: ""
 }
