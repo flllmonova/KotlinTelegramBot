@@ -5,11 +5,11 @@ fun main(args: Array<String>) {
     val botToken: String = args[0]
     val telegramBotService = TelegramBotService(botToken)
 
-    var updates = ""
+    var updates: String
     var updateId = 0L
-    var lastUpdateId = 0L
-    var chatId = ""
-    var messageText = ""
+    var lastUpdateId: Long
+    var chatId: String
+    var messageText: String
     var callbackData = ""
 
     val trainer = LearnWordsTrainer(3, 4)
