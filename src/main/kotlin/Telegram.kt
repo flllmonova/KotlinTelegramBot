@@ -6,9 +6,9 @@ fun main(args: Array<String>) {
     val telegramBotService = TelegramBotService(botToken)
 
     var updates = ""
-    var updateId = 0
-    var lastUpdateId = 0
-    var chatId = 0
+    var updateId = 0L
+    var lastUpdateId = 0L
+    var chatId = ""
     var messageText = ""
     var callbackData = ""
 
@@ -20,7 +20,7 @@ fun main(args: Array<String>) {
         println(updates)
 
         lastUpdateId = getLastUpdateId(updates)
-        if (lastUpdateId == -1) continue else updateId = lastUpdateId + 1
+        if (lastUpdateId == -1L) continue else updateId = lastUpdateId + 1L
 
         chatId = getChatId(updates)
 
@@ -31,10 +31,10 @@ fun main(args: Array<String>) {
     }
 }
 
-fun getLastUpdateId(updates: String): Int {
+fun getLastUpdateId(updates: String): Long {
     val lastUpdateIdRegex = "\"update_id\":(\\d+)".toRegex()
     val matchResult = lastUpdateIdRegex.find(updates)
-    return matchResult?.groups?.get(1)?.value?.toIntOrNull() ?: -1
+    return matchResult?.groups?.get(1)?.value?.toLongOrNull() ?: -1L
 }
 
 fun getMessageText(updates: String): String {
@@ -43,10 +43,10 @@ fun getMessageText(updates: String): String {
     return matchResult?.groups?.get(1)?.value ?: ""
 }
 
-fun getChatId(updates: String): Int {
+fun getChatId(updates: String): String {
     val chatIdRegex = "\"id\":(\\d+)".toRegex()
     val matchResult = chatIdRegex.find(updates)
-    return matchResult?.groups?.get(1)?.value?.toInt() ?: -1
+    return matchResult?.groups?.get(1)?.value ?: ""
 }
 
 fun getCallbackData(updates: String): String {

@@ -1,6 +1,5 @@
 package org.example
 
-import java.net.StandardProtocolFamily
 import java.net.URI
 import java.net.URLEncoder
 import java.net.http.HttpClient
@@ -9,27 +8,29 @@ import java.net.http.HttpResponse
 import java.nio.charset.StandardCharsets
 
 private const val TELEGRAM_API = "https://api.telegram.org/bot"
+private const val CALLBACK_DATA_LEARNED_WORDS = "learn_words_clicked"
+private const val CALLBACK_DATA_STATISTICS = "statistics_clicked"
 
 class TelegramBotService(private val botToken: String) {
 
     private val client: HttpClient = HttpClient.newBuilder().build()
 
-    fun getUpdates(updateId: Int): String {
+    fun getUpdates(updateId: Long): String {
         val urlGetUpdates = "$TELEGRAM_API$botToken/getUpdates?offset=$updateId"
         val request: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlGetUpdates)).build()
         val response: HttpResponse<String> = client.send(request, HttpResponse.BodyHandlers.ofString())
         return response.body()
     }
 
-    fun sendMessage(chatId: Int, message: String) {
+    fun sendMessage(chatId: String, message: String) {
         val encoded = URLEncoder.encode(message, StandardCharsets.UTF_8)
         val urlSendMessage = "https://api.telegram.org/bot$botToken/sendMessage?chat_id=$chatId&text=$encoded"
         val request: HttpRequest = HttpRequest.newBuilder().uri(URI.create(urlSendMessage)).build()
         client.send(request, HttpResponse.BodyHandlers.ofString())
     }
 
-    fun sendMenu(chatId: Int) {
-        val sendMessage = "https://api.telegram.org/bot$botToken/sendMessage"
+    fun sendMenu(chatId: String) {
+        val sendMessage = "$TELEGRAM_API$botToken/sendMessage"
         val sendMenuBody = """
             {
               "chat_id": $chatId,
@@ -39,13 +40,13 @@ class TelegramBotService(private val botToken: String) {
                   [
                     {
                       "text": "Изучить слова",
-                      "callback_data": "learn_words_clicked"
+                      "callback_data": "$CALLBACK_DATA_LEARNED_WORDS"
                     }
                   ],
                   [
                     {
                       "text": "Статистика",
-                      "callback_data": "statistics_clicked"
+                      "callback_data": "$CALLBACK_DATA_STATISTICS"
                     }
                   ]  
                 ]
