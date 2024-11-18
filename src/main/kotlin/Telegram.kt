@@ -11,6 +11,7 @@ fun main(args: Array<String>) {
     var chatId: String
     var messageText: String
     var callbackData = ""
+    var statistics: Statistics
 
     val trainer = LearnWordsTrainer(3, 4)
 
@@ -28,6 +29,12 @@ fun main(args: Array<String>) {
         if (messageText == "hello") telegramBotService.sendMessage(chatId, "Hello")
 
         if (messageText == "/start") telegramBotService.sendMenu(chatId)
+
+        callbackData = getCallbackData(updates)
+        if (callbackData == CALLBACK_DATA_STATISTICS) {
+            statistics = trainer.getStatistics()
+            telegramBotService.sendMessage(chatId, statistics.statisticsToString())
+        }
     }
 }
 
