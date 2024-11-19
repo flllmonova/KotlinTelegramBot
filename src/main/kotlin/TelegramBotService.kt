@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets
 private const val TELEGRAM_API = "https://api.telegram.org/bot"
 const val CALLBACK_DATA_LEARNED_WORDS = "learn_words_clicked"
 const val CALLBACK_DATA_STATISTICS = "statistics_clicked"
+const val CALLBACK_DATA_ANSWER_PREFIX = "answer_"
 
 class TelegramBotService(private val botToken: String) {
 
@@ -56,6 +57,32 @@ class TelegramBotService(private val botToken: String) {
         val request: HttpRequest = HttpRequest.newBuilder().uri(URI.create(sendMessage))
             .header("Content-type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(sendMenuBody))
+            .build()
+        client.send(request, HttpResponse.BodyHandlers.ofString())
+    }
+
+    fun sendQuestion(chatId: String, question: Question) {
+        val sendMessage = "$TELEGRAM_API$botToken/sendMessage"
+        val questionToJSON = question.variants
+            .mapIndexed { index, word ->
+                "[ { \"text\": \"${word.translate}\", " +
+                        "\"callback_data\": \"${CALLBACK_DATA_ANSWER_PREFIX + index}\" } ]"
+            }
+            .joinToString(", ")
+        val sendQuestionBody = """
+            {
+              "chat_id": $chatId,
+              "text": "${question.correctAnswer.original}",
+              "reply_markup": {
+                "inline_keyboard": [
+                  $questionToJSON
+                ]
+              }
+            }
+        """.trimIndent()
+        val request: HttpRequest = HttpRequest.newBuilder().uri(URI.create(sendMessage))
+            .header("Content-type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(sendQuestionBody))
             .build()
         client.send(request, HttpResponse.BodyHandlers.ofString())
     }
