@@ -1,12 +1,14 @@
-increasing|возрастающий|1
-decreasing|убывающий|1
-is considered||рассматривается|8
+increasing|возрастающий|7
+decreasing|убывающий|7
+is considered|рассматривается|8
 counterpart|аналог|1
 inclusive|включительно|7
-exclusive|не включительно|1
-truncated|усеченный|5
-retrieve|извлекать|1
-stock list|список товаров|1
-compute|вычислить|4
-decipher|расшифровать|0
+exclusive|не включительно|7
+truncated|усеченный|1
+retrieve|извлекать|7
+stock list|список товаров|7
+compute|вычислить|1
+decipher|расшифровать|5
 rather|довольно|5
+hence|следовательно|2
+participant|участник|2
