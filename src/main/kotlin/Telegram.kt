@@ -37,8 +37,9 @@ fun main(args: Array<String>) {
         }
 
         if (callbackData == CALLBACK_DATA_LEARNED_WORDS) {
-            checkNextQuestionAndSend(trainer, telegramBotService, chatId)
-        }
+            checkNextQuestionAndSend(trainer, telegramBotService, chatId) }
+
+        if (callbackData == CALLBACK_DATA_BACK_TO_MENU) { telegramBotService.sendMenu(chatId) }
     }
 }
 
