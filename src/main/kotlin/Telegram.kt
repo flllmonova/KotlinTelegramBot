@@ -26,19 +26,19 @@ fun main(args: Array<String>) {
         chatId = getChatId(updates)
 
         messageText = getMessageText(updates).lowercase()
-        if (messageText == "hello") telegramBotService.sendMessage(chatId, "Hello")
-
-        if (messageText == "/start") telegramBotService.sendMenu(chatId)
+        when (messageText) {
+            "hello" -> telegramBotService.sendMessage(chatId, "Hello")
+            "/start" -> telegramBotService.sendMenu(chatId)
+        }
 
         callbackData = getCallbackData(updates)
-
         when (callbackData) {
-            CALLBACK_DATA_LEARNED_WORDS -> { checkNextQuestionAndSend(trainer, telegramBotService, chatId) }
+            CALLBACK_DATA_LEARNED_WORDS -> checkNextQuestionAndSend(trainer, telegramBotService, chatId)
             CALLBACK_DATA_STATISTICS -> {
                 statistics = trainer.getStatistics()
                 telegramBotService.sendMessage(chatId, statistics.statisticsToString())
             }
-            CALLBACK_DATA_BACK_TO_MENU -> { telegramBotService.sendMenu(chatId) }
+            CALLBACK_DATA_BACK_TO_MENU -> telegramBotService.sendMenu(chatId)
         }
     }
 }
