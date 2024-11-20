@@ -35,6 +35,11 @@ fun main(args: Array<String>) {
             statistics = trainer.getStatistics()
             telegramBotService.sendMessage(chatId, statistics.statisticsToString())
         }
+
+        if (callbackData == CALLBACK_DATA_LEARNED_WORDS) {
+            checkNextQuestionAndSend(trainer, telegramBotService, chatId) }
+
+        if (callbackData == CALLBACK_DATA_BACK_TO_MENU) { telegramBotService.sendMenu(chatId) }
     }
 }
 
@@ -60,4 +65,20 @@ fun getCallbackData(updates: String): String {
     val dataRegex = "\"data\":\"(.+?)\"".toRegex()
     val matchResult = dataRegex.find(updates)
     return matchResult?.groups?.get(1)?.value ?: ""
+}
+
+fun checkNextQuestionAndSend(
+    trainer: LearnWordsTrainer,
+    telegramBotService: TelegramBotService,
+    chatId: String,
+) {
+    val question = trainer.getNextQuestion()
+    if (trainer.isDictionaryEmpty) {
+        telegramBotService.sendMessage(chatId, "Невозможно загрузить словарь")
+        return
+    }
+    if (question == null) {
+        telegramBotService.sendMessage(chatId, "Все слова в словаре выучены")
+        return
+    } else telegramBotService.sendQuestion(chatId, question)
 }
