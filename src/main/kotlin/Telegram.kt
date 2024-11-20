@@ -94,10 +94,10 @@ fun checkAnswer(
     telegramBotService: TelegramBotService,
     chatId: String)
 {
-    val answerIndex = callbackData.substringAfter(CALLBACK_DATA_ANSWER_PREFIX).toInt()
+    val userAnswerIndex = callbackData.substringAfter(CALLBACK_DATA_ANSWER_PREFIX).toInt()
     val correctAnswer = trainer.getCurrentQuestion()?.correctAnswer
     correctAnswer?.let {
-        val resultMessage = if (trainer.checkAnswer(answerIndex)) "✅ Правильно!"
+        val resultMessage = if (trainer.checkAnswer(userAnswerIndex)) "✅ Правильно!"
         else "❌ Неправильно! ${correctAnswer.original} – это ${correctAnswer.translate}"
         telegramBotService.sendMessage(chatId, resultMessage)
     } ?: telegramBotService.sendMessage(chatId, "\uD83D\uDD5C Ответ на вопрос не загрузился")
