@@ -10,7 +10,7 @@ fun main(args: Array<String>) {
     var lastUpdateId: Long
     var chatId: String
     var messageText: String
-    var callbackData = ""
+    var callbackData: String
     var statistics: Statistics
 
     val trainer = LearnWordsTrainer(3, 4)
@@ -31,15 +31,15 @@ fun main(args: Array<String>) {
         if (messageText == "/start") telegramBotService.sendMenu(chatId)
 
         callbackData = getCallbackData(updates)
-        if (callbackData == CALLBACK_DATA_STATISTICS) {
-            statistics = trainer.getStatistics()
-            telegramBotService.sendMessage(chatId, statistics.statisticsToString())
+
+        when (callbackData) {
+            CALLBACK_DATA_LEARNED_WORDS -> { checkNextQuestionAndSend(trainer, telegramBotService, chatId) }
+            CALLBACK_DATA_STATISTICS -> {
+                statistics = trainer.getStatistics()
+                telegramBotService.sendMessage(chatId, statistics.statisticsToString())
+            }
+            CALLBACK_DATA_BACK_TO_MENU -> { telegramBotService.sendMenu(chatId) }
         }
-
-        if (callbackData == CALLBACK_DATA_LEARNED_WORDS) {
-            checkNextQuestionAndSend(trainer, telegramBotService, chatId) }
-
-        if (callbackData == CALLBACK_DATA_BACK_TO_MENU) { telegramBotService.sendMenu(chatId) }
     }
 }
 
