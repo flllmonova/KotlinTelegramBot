@@ -36,9 +36,14 @@ fun main(args: Array<String>) {
             CALLBACK_DATA_LEARNED_WORDS -> checkNextQuestionAndSend(trainer, telegramBotService, chatId)
             CALLBACK_DATA_STATISTICS -> {
                 statistics = trainer.getStatistics()
-                telegramBotService.sendMessage(chatId, statistics.statisticsToString())
+                telegramBotService.sendMessageAndBackToMenuButton(statistics.statisticsToString(), chatId)
             }
             CALLBACK_DATA_BACK_TO_MENU -> telegramBotService.sendMenu(chatId)
+        }
+
+        if (callbackData.startsWith(CALLBACK_DATA_ANSWER_PREFIX)) {
+            checkAnswer(callbackData, trainer, telegramBotService, chatId)
+            checkNextQuestionAndSend(trainer, telegramBotService, chatId)
         }
     }
 }
@@ -74,11 +79,26 @@ fun checkNextQuestionAndSend(
 ) {
     val question = trainer.getNextQuestion()
     if (trainer.isDictionaryEmpty) {
-        telegramBotService.sendMessage(chatId, "Невозможно загрузить словарь")
+        telegramBotService.sendMessageAndBackToMenuButton("Невозможно загрузить словарь", chatId)
         return
     }
     if (question == null) {
-        telegramBotService.sendMessage(chatId, "Все слова в словаре выучены")
+        telegramBotService.sendMessageAndBackToMenuButton("✅ Все слова в словаре выучены", chatId)
         return
     } else telegramBotService.sendQuestion(chatId, question)
+}
+
+fun checkAnswer(
+    callbackData: String,
+    trainer: LearnWordsTrainer,
+    telegramBotService: TelegramBotService,
+    chatId: String)
+{
+    val userAnswerIndex = callbackData.substringAfter(CALLBACK_DATA_ANSWER_PREFIX).toInt()
+    val correctAnswer = trainer.getCurrentQuestion()?.correctAnswer
+    correctAnswer?.let {
+        val resultMessage = if (trainer.checkAnswer(userAnswerIndex)) "✅ Правильно!"
+        else "❌ Неправильно! ${correctAnswer.original} – это ${correctAnswer.translate}"
+        telegramBotService.sendMessage(chatId, resultMessage)
+    } ?: telegramBotService.sendMessage(chatId, "\uD83D\uDD5C Ответ на вопрос не загрузился")
 }

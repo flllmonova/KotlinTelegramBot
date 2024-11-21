@@ -10,6 +10,7 @@ class LearnWordsTrainer(
     val isDictionaryEmpty = dictionary.isEmpty()
 
     private var question: Question? = null
+    fun getCurrentQuestion(): Question? = question
 
     private fun loadDictionary(): List<Word> {
         val dictionary: MutableList<Word> = mutableListOf()

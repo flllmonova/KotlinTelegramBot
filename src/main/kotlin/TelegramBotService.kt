@@ -93,4 +93,29 @@ class TelegramBotService(private val botToken: String) {
             .build()
         client.send(request, HttpResponse.BodyHandlers.ofString())
     }
+
+    fun sendMessageAndBackToMenuButton(text: String, chatId: String) {
+        val sendMessage = "$TELEGRAM_API$botToken/sendMessage"
+        val sendBackToMenuBody = """
+            {
+              "chat_id": $chatId,
+              "text": "$text",
+              "reply_markup": {
+                "inline_keyboard": [
+                   [
+                    {
+                      "text": "↩️ В меню",
+                      "callback_data": "$CALLBACK_DATA_BACK_TO_MENU"
+                    }
+                  ]
+                ]
+              }
+            }
+        """.trimIndent()
+        val request: HttpRequest = HttpRequest.newBuilder().uri(URI.create(sendMessage))
+            .header("Content-type", "application/json")
+            .POST(HttpRequest.BodyPublishers.ofString(sendBackToMenuBody))
+            .build()
+        client.send(request, HttpResponse.BodyHandlers.ofString())
+    }
 }
