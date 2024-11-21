@@ -1,19 +1,20 @@
-increasing|возрастающий|8
+increasing|возрастающий|1
 decreasing|убывающий|7
 is considered|рассматривается|0
-counterpart|аналог|3
+counterpart|аналог|1
 inclusive|включительно|7
 exclusive|не включительно|7
 truncated|усеченный|2
 retrieve|извлекать|7
 stock list|список товаров|7
-compute|вычислить|2
-decipher|расшифровать|5
+compute|вычислить|3
+decipher|расшифровать|2
 rather|довольно|7
 hence|следовательно|0
 participant|участник|3
 extract|извлечь|7
-article|статья|0
+article|статья|1
 depend|зависеть|7
-substring|подстрока|7
-appear|появиться|1
+substring|подстрока|1
+appear|появиться|2
+consecutive|последовательный|0
