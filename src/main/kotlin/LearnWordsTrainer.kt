@@ -1,12 +1,31 @@
-package org.example
-
 import java.io.File
+
+data class Word(
+    val original: String,
+    val translate: String,
+    var correctAnswersCount: Int = 0,
+)
+
+data class Question(
+    val variants: List<Word>,
+    val correctAnswer: Word,
+)
+
+data class Statistics(
+    val total: Int,
+    val learned: Int,
+    val percent: Int,
+)
+
+fun Statistics.statisticsToString(): String {
+    return "✅ Выучено ${this.learned} из ${this.total} слов | ${this.percent}%\n"
+}
 
 class LearnWordsTrainer(
     private val learnedAnswerCount: Int = 3,
     private val questionWordCount: Int = 4,
 ) {
-    private val dictionary = loadDictionary()
+    private var dictionary = loadDictionary()
     val isDictionaryEmpty = dictionary.isEmpty()
 
     private var question: Question? = null
@@ -25,6 +44,13 @@ class LearnWordsTrainer(
             dictionary.add(word)
         }
         return dictionary
+    }
+
+    fun resetResult() {
+        val wordsFile = File("words.txt")
+        wordsFile.writeText("")
+        dictionary.forEach { wordsFile.appendText("${it.component1()}|${it.component2()}|0\n") }
+        dictionary = loadDictionary()
     }
 
     private fun saveDictionary(words: List<Word>) {
@@ -70,9 +96,3 @@ class LearnWordsTrainer(
         return Statistics(total, learned, percent)
     }
 }
-
-data class Word(
-    val original: String,
-    val translate: String,
-    var correctAnswersCount: Int = 0,
-)
