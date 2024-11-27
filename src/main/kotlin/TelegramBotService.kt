@@ -72,7 +72,7 @@ class TelegramBotService(private val botToken: String) {
                     listOf(InlineMarkup(text = "\uD83D\uDCCA Статистика", callbackData = CALLBACK_DATA_STATISTICS)),
                     listOf(
                         InlineMarkup(
-                            text = "\uD83D\uDD04 Сбросить результат",
+                            text = "\uD83D\uDD04 Сбросить прогресс",
                             callbackData = CALLBACK_DATA_RESET_RESULT_QUESTION
                         )
                     ),
