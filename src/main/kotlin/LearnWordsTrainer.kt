@@ -26,7 +26,7 @@ class LearnWordsTrainer(
     private val learnedAnswerCount: Int = 3,
     private val questionWordCount: Int = 4,
 ) {
-    private var dictionary = loadDictionary()
+    private val dictionary = loadDictionary()
     val isDictionaryEmpty = dictionary.isEmpty()
 
     private var question: Question? = null
