@@ -94,6 +94,7 @@ fun handleUpdate(
             val statistics = trainer.getStatistics()
             telegramBotService.sendMessageAndMenuBackButton(statistics.statisticsToString(), chatId)
         }
+
         CALLBACK_DATA_MENU_BACK -> telegramBotService.sendMenu(chatId)
         CALLBACK_DATA_RESET_RESULT_QUESTION -> telegramBotService.resetProgressQuestion(chatId, trainer)
         CALLBACK_DATA_RESET_RESULT -> {
@@ -128,8 +129,8 @@ fun checkAnswer(
     callbackData: String,
     trainer: LearnWordsTrainer,
     telegramBotService: TelegramBotService,
-    chatId: Long)
-{
+    chatId: Long
+) {
     val userAnswerIndex = callbackData.substringAfter(CALLBACK_DATA_ANSWER_PREFIX).toInt()
     val correctAnswer = trainer.getCurrentQuestion()?.correctAnswer
     correctAnswer?.let {

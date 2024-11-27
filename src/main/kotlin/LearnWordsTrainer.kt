@@ -34,7 +34,7 @@ class LearnWordsTrainer(
 
     private fun loadDictionary(): List<Word> {
         val wordsFile = File(fileName)
-        if(!wordsFile.exists()) File("words.txt").copyTo(wordsFile)
+        if (!wordsFile.exists()) File("words.txt").copyTo(wordsFile)
 
         val dictionary: MutableList<Word> = mutableListOf()
         wordsFile.forEachLine {
