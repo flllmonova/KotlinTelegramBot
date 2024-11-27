@@ -122,14 +122,14 @@ class TelegramBotService(private val botToken: String) {
         client.send(request, HttpResponse.BodyHandlers.ofString())
     }
 
-    fun resetResultQuestion(chatId: Long, trainer: LearnWordsTrainer) {
+    fun resetProgressQuestion(chatId: Long, trainer: LearnWordsTrainer) {
         val statistics = trainer.getStatistics()
         val requestBody = if (statistics.learned == 0) {
             SendMessageRequest(
                 chatId = chatId,
                 text = """
                 Вы выучили ${statistics.learned} из ${statistics.total} слов | ${statistics.percent}%
-                ❌ Сброс результата невозможен
+                ❌ Сброс прогресса невозможен
             """.trimIndent(),
                 replyMarkup = ReplyMarkup(listOf(listOf(menuBackButton)))
             )
@@ -138,7 +138,7 @@ class TelegramBotService(private val botToken: String) {
                 chatId = chatId,
                 text = """
                 Вы выучили ${statistics.learned} из ${statistics.total} слов | ${statistics.percent}%
-                Сбросить результат?
+                Сбросить прогресс?
             """.trimIndent(),
                 ReplyMarkup(
                     listOf(

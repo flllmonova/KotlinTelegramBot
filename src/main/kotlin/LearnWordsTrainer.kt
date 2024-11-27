@@ -22,6 +22,7 @@ fun Statistics.statisticsToString(): String {
 }
 
 class LearnWordsTrainer(
+    private val fileName: String = "words.txt",
     private val learnedAnswerCount: Int = 3,
     private val questionWordCount: Int = 4,
 ) {
@@ -32,8 +33,10 @@ class LearnWordsTrainer(
     fun getCurrentQuestion(): Question? = question
 
     private fun loadDictionary(): List<Word> {
+        val wordsFile = File(fileName)
+        if(!wordsFile.exists()) File("words.txt").copyTo(wordsFile)
+
         val dictionary: MutableList<Word> = mutableListOf()
-        val wordsFile = File("words.txt")
         wordsFile.forEachLine {
             val line = it.split("|")
             val word = Word(
@@ -46,17 +49,15 @@ class LearnWordsTrainer(
         return dictionary
     }
 
-    fun resetResult() {
-        val wordsFile = File("words.txt")
-        wordsFile.writeText("")
-        dictionary.forEach { wordsFile.appendText("${it.component1()}|${it.component2()}|0\n") }
-        dictionary = loadDictionary()
+    fun resetProgress() {
+        dictionary.forEach { it.correctAnswersCount = 0 }
+        saveDictionary()
     }
 
-    private fun saveDictionary(words: List<Word>) {
-        val wordsFile = File("words.txt")
+    private fun saveDictionary() {
+        val wordsFile = File(fileName)
         wordsFile.writeText("")
-        words.forEach { wordsFile.appendText("${it.component1()}|${it.component2()}|${it.component3()}\n") }
+        dictionary.forEach { wordsFile.appendText("${it.component1()}|${it.component2()}|${it.component3()}\n") }
     }
 
     fun getNextQuestion(): Question? {
@@ -81,7 +82,7 @@ class LearnWordsTrainer(
             val correctAnswerIndex = it.variants.indexOf(it.correctAnswer)
             if (userAnswerIndex == correctAnswerIndex) {
                 it.correctAnswer.correctAnswersCount++
-                saveDictionary(dictionary)
+                saveDictionary()
                 true
             } else {
                 false
