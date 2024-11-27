@@ -44,6 +44,7 @@ data class SendMessageRequest(
 class TelegramBotService(private val botToken: String) {
 
     private val client: HttpClient = HttpClient.newBuilder().build()
+    val json = Json { ignoreUnknownKeys = true }
     private val menuBackButton = InlineMarkup(text = "↩\uFE0F В меню", callbackData = CALLBACK_DATA_MENU_BACK)
 
     fun getUpdates(updateId: Long): String {
@@ -60,7 +61,7 @@ class TelegramBotService(private val botToken: String) {
         client.send(request, HttpResponse.BodyHandlers.ofString())
     }
 
-    fun sendMenu(json: Json, chatId: Long) {
+    fun sendMenu(chatId: Long) {
         val sendMessage = "$TELEGRAM_API$botToken/sendMessage"
         val requestBody = SendMessageRequest(
             chatId = chatId,
@@ -86,7 +87,7 @@ class TelegramBotService(private val botToken: String) {
         client.send(request, HttpResponse.BodyHandlers.ofString())
     }
 
-    fun sendQuestion(json: Json, chatId: Long, question: Question) {
+    fun sendQuestion(chatId: Long, question: Question) {
         val answerOptionsAndBackToMenuButton = question.variants.mapIndexed { index, word ->
             listOf(InlineMarkup(text = word.translate, callbackData = CALLBACK_DATA_ANSWER_PREFIX + index))
         }.toMutableList()
@@ -106,7 +107,7 @@ class TelegramBotService(private val botToken: String) {
         client.send(request, HttpResponse.BodyHandlers.ofString())
     }
 
-    fun sendMessageAndMenuBackButton(json: Json, text: String, chatId: Long) {
+    fun sendMessageAndMenuBackButton(text: String, chatId: Long) {
         val sendMessage = "$TELEGRAM_API$botToken/sendMessage"
         val requestBody = SendMessageRequest(
             chatId = chatId,
@@ -121,7 +122,7 @@ class TelegramBotService(private val botToken: String) {
         client.send(request, HttpResponse.BodyHandlers.ofString())
     }
 
-    fun resetResultQuestion(json: Json, chatId: Long, trainer: LearnWordsTrainer) {
+    fun resetResultQuestion(chatId: Long, trainer: LearnWordsTrainer) {
         val statistics = trainer.getStatistics()
         val requestBody = if (statistics.learned == 0) {
             SendMessageRequest(

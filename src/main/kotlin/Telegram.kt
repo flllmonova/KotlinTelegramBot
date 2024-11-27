@@ -1,8 +1,5 @@
 package org.example
 
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-
 import CALLBACK_DATA_ANSWER_PREFIX
 import CALLBACK_DATA_MENU_BACK
 import CALLBACK_DATA_LEARNED_WORDS
@@ -11,9 +8,10 @@ import CALLBACK_DATA_RESET_RESULT_QUESTION
 import CALLBACK_DATA_STATISTICS
 import LearnWordsTrainer
 import Statistics
-import TelegramBotService
-import kotlinx.serialization.SerialName
 import statisticsToString
+import TelegramBotService
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 
 @Serializable
 data class Chat(
@@ -55,8 +53,6 @@ data class Response(
 
 fun main(args: Array<String>) {
 
-    val json = Json { ignoreUnknownKeys = true }
-
     val botToken: String = args[0]
     val telegramBotService = TelegramBotService(botToken)
 
@@ -76,7 +72,7 @@ fun main(args: Array<String>) {
         Thread.sleep(1500)
         responseString = telegramBotService.getUpdates(updateId)
         println(responseString)
-        response = json.decodeFromString(responseString)
+        response = telegramBotService.json.decodeFromString(responseString)
         updates = response.result
         firstUpdate = updates.firstOrNull() ?: continue
         updateId = firstUpdate.updateId + 1
@@ -86,46 +82,45 @@ fun main(args: Array<String>) {
         messageText = firstUpdate.message?.text ?: ""
         when (messageText) {
             "hello" -> telegramBotService.sendMessage(chatId, "Hello")
-            "/start" -> telegramBotService.sendMenu(json, chatId)
+            "/start" -> telegramBotService.sendMenu(chatId)
         }
 
         callbackData = firstUpdate.callbackQuery?.data ?: ""
         when (callbackData) {
-            CALLBACK_DATA_LEARNED_WORDS -> checkNextQuestionAndSend(json, trainer, telegramBotService, chatId)
+            CALLBACK_DATA_LEARNED_WORDS -> checkNextQuestionAndSend(trainer, telegramBotService, chatId)
             CALLBACK_DATA_STATISTICS -> {
                 statistics = trainer.getStatistics()
-                telegramBotService.sendMessageAndMenuBackButton(json, statistics.statisticsToString(), chatId)
+                telegramBotService.sendMessageAndMenuBackButton(statistics.statisticsToString(), chatId)
             }
-            CALLBACK_DATA_MENU_BACK -> telegramBotService.sendMenu(json, chatId)
-            CALLBACK_DATA_RESET_RESULT_QUESTION -> telegramBotService.resetResultQuestion(json, chatId, trainer)
+            CALLBACK_DATA_MENU_BACK -> telegramBotService.sendMenu(chatId)
+            CALLBACK_DATA_RESET_RESULT_QUESTION -> telegramBotService.resetResultQuestion(chatId, trainer)
             CALLBACK_DATA_RESET_RESULT -> {
                 trainer.resetResult()
-                telegramBotService.sendMessageAndMenuBackButton(json, "☑\uFE0F Ваш результат сброшен", chatId)
+                telegramBotService.sendMessageAndMenuBackButton("☑\uFE0F Ваш результат сброшен", chatId)
             }
         }
 
         if (callbackData.startsWith(CALLBACK_DATA_ANSWER_PREFIX)) {
             checkAnswer(callbackData, trainer, telegramBotService, chatId)
-            checkNextQuestionAndSend(json, trainer, telegramBotService, chatId)
+            checkNextQuestionAndSend(trainer, telegramBotService, chatId)
         }
     }
 }
 
 fun checkNextQuestionAndSend(
-    json: Json,
     trainer: LearnWordsTrainer,
     telegramBotService: TelegramBotService,
     chatId: Long,
 ) {
     val question = trainer.getNextQuestion()
     if (trainer.isDictionaryEmpty) {
-        telegramBotService.sendMessageAndMenuBackButton(json, "\uD83D\uDD5C Невозможно загрузить словарь", chatId)
+        telegramBotService.sendMessageAndMenuBackButton("\uD83D\uDD5C Невозможно загрузить словарь", chatId)
         return
     }
     if (question == null) {
-        telegramBotService.sendMessageAndMenuBackButton(json,"✅ Все слова в словаре выучены", chatId)
+        telegramBotService.sendMessageAndMenuBackButton("✅ Все слова в словаре выучены", chatId)
         return
-    } else telegramBotService.sendQuestion(json, chatId, question)
+    } else telegramBotService.sendQuestion(chatId, question)
 }
 
 fun checkAnswer(
