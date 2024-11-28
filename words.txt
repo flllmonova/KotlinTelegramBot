@@ -1,6 +1,6 @@
 increasing|возрастающий|0
-decreasing|убывающий|0
-is considered|рассматривается|0
+decreasing|убывающий|1
+consider|рассматривать|0
 counterpart|аналог|0
 inclusive|включительно|0
 exclusive|не включительно|0
@@ -23,7 +23,28 @@ data exchange|обмен данными|0
 directly|непосредственно|0
 complete|полный|0
 reflect|отражать|0
-corresponding|соответствующий|0
-unnecessary|ненужный|0
-handle|справляться|0
-storage|хранилище|0
+multi-user mode|многопользовательский режим|0
+suppose|предполагать|0
+dimensionless|безразмерный|0
+principal|главный|0
+road surface|дорожное покрытие|0
+friction|разногласие|0
+aggregate|совокупный|0
+braking distance|тормозной путь|0
+equate|приравнивать|0
+velocity|скорость|0
+почтовый индекс|почтовый индекс|0
+salesman|продавец|0
+encode|зашифровать|0
+decode|расшифровывать|0
+whatever|любой|0
+whenever|всякий раз, когда|0
+indeed|в самом деле|0
+skip|пропустить|0
+still|все еще|0
+report|доклад|0
+advance|продвижение|0
+abolish|упразднять|0
+eliminate|устранить|0
+necessary|необходимый|0
+vehicle|транспортное средство|0
