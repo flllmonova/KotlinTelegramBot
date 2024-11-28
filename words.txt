@@ -1,25 +1,29 @@
 increasing|возрастающий|0
-decreasing|убывающий|1
-is considered|рассматривается|1
-counterpart|аналог|1
+decreasing|убывающий|0
+is considered|рассматривается|0
+counterpart|аналог|0
 inclusive|включительно|0
 exclusive|не включительно|0
-truncated|усеченный|3
-retrieve|извлекать|3
-stock list|список товаров|3
-compute|вычислить|3
-decipher|расшифровать|1
-rather|довольно|1
-hence|следовательно|1
-participant|участник|1
-extract|извлечь|3
-article|статья|3
-depend|зависеть|1
-substring|подстрока|2
-appear|появиться|1
-exchange|обмениваться|3
+truncated|усеченный|0
+retrieve|извлекать|0
+stock list|список товаров|0
+compute|вычислить|0
+decipher|расшифровать|0
+rather|довольно|0
+hence|следовательно|0
+participant|участник|0
+extract|извлечь|0
+article|статья|0
+depend|зависеть|0
+substring|подстрока|0
+appear|появиться|0
+exchange|обмениваться|0
 particularly|особенно|0
-data exchange|обмен данными|2
+data exchange|обмен данными|0
 directly|непосредственно|0
 complete|полный|0
-reflect|отражать|2
+reflect|отражать|0
+corresponding|соответствующий|0
+unnecessary|ненужный|0
+handle|справляться|0
+storage|хранилище|0
