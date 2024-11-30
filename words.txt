@@ -1,5 +1,5 @@
 increasing|возрастающий|0
-decreasing|убывающий|1
+decreasing|убывающий|0
 consider|рассматривать|0
 counterpart|аналог|0
 inclusive|включительно|0
