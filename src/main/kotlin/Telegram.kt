@@ -1,14 +1,5 @@
 package org.example
 
-import CALLBACK_DATA_ANSWER_PREFIX
-import CALLBACK_DATA_MENU_BACK
-import CALLBACK_DATA_LEARNED_WORDS
-import CALLBACK_DATA_RESET_RESULT
-import CALLBACK_DATA_RESET_RESULT_QUESTION
-import CALLBACK_DATA_STATISTICS
-import LearnWordsTrainer
-import statisticsToString
-import TelegramBotService
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
